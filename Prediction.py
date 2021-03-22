@@ -57,7 +57,9 @@ standard_time
 #%%
 
 # create correct timing format in the dataframe
-df_bike['DateTime'] = standard_time 
+df_bike['DateTime'] = standard_time
+
+
 #%%
 # remove useles columns
 del df_bike['Date']
@@ -66,8 +68,14 @@ del df_bike['Heure / Time']
 
 # %%
 
+bike_ts = df_bike.set_index(['DateTime'])
+#bike_ts = polution_ts.sort_index(ascending=True)
+#bike_ts.head(12)
 
 
 # %%
 
-#df_bike.columns = ['',' ','']
+#V1J = Vélos depuis le 1er janvier / Grand total
+#VCJ = Vélos ce jour / Today's total
+bike_ts.columns = ['V1J','VCJ']
+
