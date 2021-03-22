@@ -24,3 +24,19 @@ df_bike_data_raw.head(n=5)
 df_bike_data_raw.tail(n=5)
 
 # %%
+#
+df_bike_data_raw.columns
+
+
+# %%
+#Dropping useless columns ( with missing values).
+to_drop = ['Remarque','Unnamed: 4']
+df_bike1= df_bike_data_raw.drop(to_drop, inplace=False, axis=1)
+
+
+# %%
+#Dropping useless rows ( with missing values).
+df_bike = df_bike1.dropna()
+
+
+# %%
