@@ -1,5 +1,3 @@
-#Importation des données
-
 #%%
 
 #import os
@@ -46,4 +44,30 @@ df_bike.tail(n=5)
 df_bike.columns
 
 
+#%%
+
+standard_time  = pd.to_datetime(df_bike['Date'] +
+                               ' ' + df_bike['Heure / Time'],
+                               format='%d/%m/%Y %H:%M:%S')
+
+# Where d = day, m=month, Y=year, H=hour, M=minutes
+standard_time 
+
+
+#%%
+
+# create correct timing format in the dataframe
+df_bike['DateTime'] = standard_time 
+#%%
+# remove useles columns
+del df_bike['Date']
+del df_bike['Heure / Time']
+
+
 # %%
+
+
+
+# %%
+
+#df_bike.columns = ['',' ','']
