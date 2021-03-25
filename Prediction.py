@@ -79,3 +79,32 @@ bike_ts = df_bike.set_index(['DateTime'])
 #VCJ = Vélos ce jour / Today's total
 bike_ts.columns = ['V1J','VCJ']
 
+
+#%%
+
+bike_ts.describe()
+
+
+#%%
+
+fig, axes = plt.subplots(2, 1, figsize=(8, 6), sharex=True)
+
+#axes[0].plot(bike_ts['V1J']).resample('d').mean(), '-'
+#axes[0].set_title("Vélos depuis le 1er janvier / Grand total")
+#axes[0].set_ylabel("Nombre des vélos")
+
+axes[1].plot(bike_ts['VCJ'])
+axes[1].set_title("Vélos ce jour / Today's total")
+axes[1].set_ylabel("Nombre des vélos")
+
+axes[0].plot(bike_ts['VCJ'].resample('d').mean(), '-')
+axes[0].set_title("Vélos depuis le 1er janvier / Grand total")
+axes[0].set_ylabel("Nombre des vélos")
+
+
+plt.show()
+
+
+# %%
+
+
