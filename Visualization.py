@@ -12,9 +12,10 @@ from scipy import stats as st
 import calendar
 import json
 from pandas import json_normalize
-import path
+#import path
+
 # %%
-url = 'https://data.montpellier3m.fr/sites/default/files/ressources/MMM_EcoCompt_X2H19070220_archive.json'
+url = 'https://data.montpellier3m.fr/sites/default/files/ressources/MMM_EcoCompt_X2H20042633_archive.json'
 path_target = "bike_traffic.json"
 download(url, path_target, replace=True)
 
@@ -22,9 +23,9 @@ download(url, path_target, replace=True)
 data_raw = pd.read_json('bike_traffic.json', lines=True)
      
 #%%
-data = json.loads(data)
+data_item = pd.read_json(open("bike_traffic.json", "r", encoding="utf8"),lines=True)
 #%%
-df = pd.DataFrame.from_dict(json_normalize(data))
+
 
 #%%
 with open('bike_traffic.json', "r") as json_data:
