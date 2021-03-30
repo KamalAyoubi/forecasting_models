@@ -12,6 +12,8 @@ from scipy import stats as st
 import calendar
 import json
 from pandas import json_normalize
+
+from ipywidgets import interact
 #import path
 
 # %%
@@ -26,8 +28,66 @@ download(url, path_target, replace=False)
 bike_traffic_df = pd.read_json('bike_traffic.json', lines=True)
      
 
+#%%
+#Display of the first 5 lines 
+bike_traffic_df.head(n=2)
+
+
 # %%
-time_improved = pd.to_datetime(data['Date'] +
+#Display of the last 5 lines 
+bike_traffic_df.tail(n=2)
+
+
+# %%
+#Checking data columns
+bike_traffic_df.columns
+
+df_titanic.describe()
+df_titanic.info()
+
+
+#%%
+plt.figure(figsize=(5, 5))
+plt.hist(bike_traffic_df['intensity'], density=False, bins=25)
+plt.xlabel('Age')
+plt.ylabel('Proportion')
+plt.title("Passager age histogram")
+
+
+#%%
+from ipywidgets import interact
+#%%
+def kde_explore(bw=5):
+    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+    sns.kdeplot(bike_traffic_df['intensity'], bw=bw, shade=True, cut=0, ax=ax)
+    plt.xlabel('Age (in year)')
+    plt.ylabel('Density level')
+    plt.title("Age of the passengers")
+    plt.tight_layout()
+    plt.show()
+# %%
+interact(kde_explore, bw=(0.001, 2, 0.01))
+
+#%%
+bike_traffic_df2=bike_traffic_df.copy()
+
+#%%
+bike_traffic_df2['laneId'] = bike_traffic_df2['laneId'].astype('str')
+
+
+
+#%%
+from pandas import Series
+
+
+#%%
+data_test=bike_traffic_df2.join(bike_traffic_df2['dateObserved'].apply(lambda x: Series(x.split('/'))))
+data_test=data_test.rename(columns = {0: 'start_of_day', 1: 'end_of_day'}) 
+
+
+#%%
+
+time_improved = pd.to_datetime(data['start_of_day'] +
                                ' ' + data['Hour'] ,
                                format='%d/%m/%Y %H:%M:%S')
 time_improved
@@ -35,9 +95,6 @@ time_improved
 # %%                              
 
 data['DateTime'] = time_improved
-# remove useles columns
-del data['Date']
-del data['Hour']
 
 
 # %%
