@@ -15,33 +15,16 @@ from pandas import json_normalize
 #import path
 
 # %%
+#Importe Data:
 url = 'https://data.montpellier3m.fr/sites/default/files/ressources/MMM_EcoCompt_X2H20042633_archive.json'
 path_target = "bike_traffic.json"
-download(url, path_target, replace=True)
+download(url, path_target, replace=False)
+
 
 #%%
-data_raw = pd.read_json('bike_traffic.json', lines=True)
+#Read .Json data as dataframe
+bike_traffic_df = pd.read_json('bike_traffic.json', lines=True)
      
-#%%
-data_item = pd.read_json(open("bike_traffic.json", "r", encoding="utf8"),lines=True)
-#%%
-
-
-#%%
-with open('bike_traffic.json', "r") as json_data:
-    print(type(json_data))
-    data_dict = json.load(json_data)
-    print(data_dict)
-#%%
-data_raw = pd.read_json('./bike_traffic.json')
-#data_raw.columns=['Date','Hour','Grand total',"Todaystotal", 'Unamed','Remark']
-    
-    
-# %%
-data = data_raw.copy()
-data.drop(columns=['Unamed', 'Remark', 'Grand total'], inplace=True)
-data.dropna(inplace = True)
-data.info()
 
 # %%
 time_improved = pd.to_datetime(data['Date'] +
