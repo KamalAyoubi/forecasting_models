@@ -259,6 +259,7 @@ pred2=model2.predict(start=len(bike_ts),end=len(bike_ts)+ 34,typ='levels').renam
 P = pd.DataFrame(pred2)
 P.index = index_future_dates
 print(P)
+
 # %%
 fig = plt.figure(figsize = (20,8))
 #P.plot(legend='ARIMA Predictions')
