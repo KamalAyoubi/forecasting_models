@@ -46,8 +46,24 @@ bike_traffic_df1.head(n=2)
 
 #%%
 
-data_teste2 = 
 
+
+###################teste
+bike_traffic_df=bike_traffic_df.rename(columns = {'intensity': 'latte1'})
+#%%
+bike_traffic_df1=bike_traffic_df1.rename(columns = {'intensity': 'latte2'}) 
+
+
+#%%
+d = [bike_traffic_df['latte1'], bike_traffic_df1['latte2']]
+#%%
+
+data_test22 = pd.DataFrame([bike_traffic_df['latte1'], bike_traffic_df1['latte2']])
+data_test22=data_test22.T
+#%%
+data_test22['startday'] = time_improved
+#%%
+data_test22 = data_test22.set_index(['startday'])
 # %%
 #Display of the last 5 lines 
 bike_traffic_df1.tail(n=2)
@@ -59,14 +75,6 @@ bike_traffic_df.columns
 
 df_titanic.describe()
 df_titanic.info()
-
-
-#%%
-plt.figure(figsize=(5, 5))
-plt.hist(bike_traffic_df['intensity'], density=False, bins=25)
-plt.xlabel('Age')
-plt.ylabel('Proportion')
-plt.title("Passager age histogram")
 
 
 #%%
@@ -85,10 +93,6 @@ interact(kde_explore, bw=(0.001, 2, 0.01))
 
 #%%
 bike_traffic_df2=bike_traffic_df.copy()
-
-#%%
-bike_traffic_df2['laneId'] = bike_traffic_df2['laneId'].astype('str')
-
 
 
 #%%
@@ -134,12 +138,12 @@ plt.show()
 
 #%%
 
-def hist_explore( alpha = 'm', bw=1 ):
+def hist_explore( pos ='latte1', alpha = 'd', bw=1 ):
 
-
+  
     fig, ax = plt.subplots(1, 1, figsize=(12, 6))
 
-    ax.plot(data_test['intensity'].resample( alpha ).mean(), '-*')
+    ax.plot(data_test22[pos].resample( alpha ).mean(), '-*')
     #ax.hist(df_titanic['Age'], density=density,
             #bins=n_bins, alpha=alpha)  # standardization
     plt.xlabel('Age')
@@ -153,7 +157,7 @@ def hist_explore( alpha = 'm', bw=1 ):
 
 # %%
 
-interact(hist_explore,  alpha=['d','m'],bw=(1, 6, 1))
+interact(hist_explore ,pos=['latte1','latte2'] ,alpha=['d','m'],bw=(1, 6, 1))
 #%%
 import ipywidgets as widgets
 
@@ -194,37 +198,3 @@ def kde_explore(bw):
 
 interact(kde_explore, bw=(1, 10, 2))
 
-#%%
-df= data.set_index(['DateTime'])
-df.idex = pd.to_datetime(df.index)
-df.head(12)
-
-# %%
-df['weekday'] = df.index.weekday
-df['Hour'] = df.index.time
-df['Year'] = df.index.year
-df['Date']=df.index.date
-df['weekend'] = df['weekday'].isin([5, 6])
-
-# %%
-start = df.index[0]
-end = df.index[-1]
-# %%
-week_df = df.loc[(df['weekend']  == False) ]
-end_df = df.loc[(df['weekday'] == True )]
-
-# %%
-plt.figure(figsize=(20,4))
-ax = plt.gca()
-ax.set_xlim(start, end)
-ax.set_ylim(0, 2500)
-ax.set_ylabel('bike Count')
-plt.scatter(week_df.index.date, week_df['Todaystotal'])  
-plt.scatter(end_df.index.date, end_df['Todaystotal'], color='r')       
-ax.legend(['weekday', 'weekend'])
-
-
-
-
-
-# %%
