@@ -48,6 +48,29 @@ bike_traffic_df1.head(n=2)
 
 
 
+from pandas import Series
+
+
+#%%
+data_test=bike_traffic_df2.join(bike_traffic_df2['dateObserved'].apply(lambda x: Series(x.split('/'))))
+data_test=data_test.rename(columns = {0: 'start_of_day', 1: 'end_of_day'}) 
+
+data_test['start_of_day'] = data_test['start_of_day'].str.replace('T',' ')
+#%%
+
+time_improved = pd.to_datetime(data_test['start_of_day'] ,
+                               format='%Y-%m-%d %H:%M:%S')
+time_improved
+
+# %%                              
+
+data_test['start_day'] = time_improved
+
+
+# %%
+data_test = data_test.set_index(['start_day'])
+
+#%%
 ###################teste
 bike_traffic_df=bike_traffic_df.rename(columns = {'intensity': 'latte1'})
 #%%
@@ -79,20 +102,6 @@ df_titanic.info()
 
 #%%
 from ipywidgets import interact
-#%%
-def kde_explore(bw=5):
-    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
-    sns.kdeplot(bike_traffic_df['intensity'], bw=bw, shade=True, cut=0, ax=ax)
-    plt.xlabel('Age (in year)')
-    plt.ylabel('Density level')
-    plt.title("Age of the passengers")
-    plt.tight_layout()
-    plt.show()
-# %%
-interact(kde_explore, bw=(0.001, 2, 0.01))
-
-#%%
-bike_traffic_df2=bike_traffic_df.copy()
 
 
 #%%
@@ -183,18 +192,3 @@ def hist_explore( bw=1 ):
 interact(hist_explore,  alpha=['d','m'],bw=(1, 6, 1))
 
 # %%
-
-def kde_explore(bw):
-    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
-    sns.kdeplot(data_test['intensity'])
-    plt.xlabel('Age (in year)')
-    plt.ylabel('Density level')
-    plt.title("Age of the passengers")
-    plt.tight_layout()
-    plt.show()
-
-
-# %%
-
-interact(kde_explore, bw=(1, 10, 2))
-
