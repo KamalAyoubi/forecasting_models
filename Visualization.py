@@ -80,11 +80,10 @@ d = [bike_traffic_df['latte1'], bike_traffic_df1['latte2']]
 
 data_test22 = pd.DataFrame([bike_traffic_df['latte1'], bike_traffic_df1['latte2']])
 data_test22=data_test22.T
-
-
-# %%
-#                                             visualisation
-#------------------------------------------------------------------------------------------------------------------------
+#%%
+data_test22['startday'] = time_improved
+#%%
+data_test22 = data_test22.set_index(['startday'])
 
 
 #%%
