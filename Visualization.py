@@ -126,24 +126,6 @@ data_test['start_day'] = time_improved
 
 # %%
 data_test = data_test.set_index(['start_day'])
-# %%
-# visualize the data set now that the time is well formated:
-fig, axes = plt.subplots(2, 1, figsize=(8, 6), sharex=True)
-
-#axes[0].plot(bike_ts['V1J']).resample('d').mean(), '-'
-#axes[0].set_title("Vélos depuis le 1er janvier / Grand total")
-#axes[0].set_ylabel("Nombre des vélos")
-
-axes[1].plot(data_test['intensity'])
-axes[1].set_title("Vélos ce jour / Today's total")
-axes[1].set_ylabel("Nombre des vélos")
-
-axes[0].plot(data_test['intensity'].resample('m').mean(), '-*')
-axes[0].set_title("Vélos depuis le 1er janvier / Grand total")
-axes[0].set_ylabel("Nombre des vélos")
-
-
-plt.show()
 
 #%%
 
