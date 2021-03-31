@@ -24,18 +24,33 @@ download(url, path_target, replace=False)
 
 
 #%%
-#Read .Json data as dataframe
+#Read .Json data as dataframe#Display of the first 5 lines 
 bike_traffic_df = pd.read_json('bike_traffic.json', lines=True)
      
 
 #%%
-#Display of the first 5 lines 
-bike_traffic_df.head(n=2)
+#Importe Data:
+url1 = 'https://data.montpellier3m.fr/sites/default/files/ressources/MMM_EcoCompt_X2H20042634_archive.json'
+path_target = "bike_traffic1.json"
+download(url1, path_target, replace=False)
 
+
+#%%
+#Read .Json data as dataframe#Display of the first 5 lines 
+bike_traffic_df1 = pd.read_json('bike_traffic1.json', lines=True)
+     
+
+
+
+bike_traffic_df1.head(n=2)
+
+#%%
+
+data_teste2 = 
 
 # %%
 #Display of the last 5 lines 
-bike_traffic_df.tail(n=2)
+bike_traffic_df1.tail(n=2)
 
 
 # %%
@@ -84,24 +99,102 @@ from pandas import Series
 data_test=bike_traffic_df2.join(bike_traffic_df2['dateObserved'].apply(lambda x: Series(x.split('/'))))
 data_test=data_test.rename(columns = {0: 'start_of_day', 1: 'end_of_day'}) 
 
-
+data_test['start_of_day'] = data_test['start_of_day'].str.replace('T',' ')
 #%%
 
-time_improved = pd.to_datetime(data['start_of_day'] +
-                               ' ' + data['Hour'] ,
-                               format='%d/%m/%Y %H:%M:%S')
+time_improved = pd.to_datetime(data_test['start_of_day'] ,
+                               format='%Y-%m-%d %H:%M:%S')
 time_improved
 
 # %%                              
 
-data['DateTime'] = time_improved
+data_test['start_day'] = time_improved
 
 
 # %%
-data
-
+data_test = data_test.set_index(['start_day'])
 # %%
 # visualize the data set now that the time is well formated:
+fig, axes = plt.subplots(2, 1, figsize=(8, 6), sharex=True)
+
+#axes[0].plot(bike_ts['V1J']).resample('d').mean(), '-'
+#axes[0].set_title("Vélos depuis le 1er janvier / Grand total")
+#axes[0].set_ylabel("Nombre des vélos")
+
+axes[1].plot(data_test['intensity'])
+axes[1].set_title("Vélos ce jour / Today's total")
+axes[1].set_ylabel("Nombre des vélos")
+
+axes[0].plot(data_test['intensity'].resample('m').mean(), '-*')
+axes[0].set_title("Vélos depuis le 1er janvier / Grand total")
+axes[0].set_ylabel("Nombre des vélos")
+
+
+plt.show()
+
+#%%
+
+def hist_explore( alpha = 'm', bw=1 ):
+
+
+    fig, ax = plt.subplots(1, 1, figsize=(12, 6))
+
+    ax.plot(data_test['intensity'].resample( alpha ).mean(), '-*')
+    #ax.hist(df_titanic['Age'], density=density,
+            #bins=n_bins, alpha=alpha)  # standardization
+    plt.xlabel('Age')
+    plt.ylabel('Density level')
+    plt.title("Histogram for passengers age")
+    plt.tight_layout()
+    plt.show()
+
+
+## todo CORRECT THE DENSITY OPTION.
+
+# %%
+
+interact(hist_explore,  alpha=['d','m'],bw=(1, 6, 1))
+#%%
+import ipywidgets as widgets
+
+#%%
+def hist_explore( bw=1 ):
+    
+
+    fig, ax = plt.subplots(1, 1, figsize=(12, 6))
+
+    ax.hist(bike_traffic_df['intensity'])
+    
+    plt.xlabel('Age')
+    plt.ylabel('Density level')
+    plt.title("Histogram for passengers age")
+    plt.tight_layout()
+    plt.show()
+
+
+## todo CORRECT THE DENSITY OPTION.
+
+# %%
+
+interact(hist_explore,  alpha=['d','m'],bw=(1, 6, 1))
+
+# %%
+
+def kde_explore(bw):
+    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+    sns.kdeplot(data_test['intensity'])
+    plt.xlabel('Age (in year)')
+    plt.ylabel('Density level')
+    plt.title("Age of the passengers")
+    plt.tight_layout()
+    plt.show()
+
+
+# %%
+
+interact(kde_explore, bw=(1, 10, 2))
+
+#%%
 df= data.set_index(['DateTime'])
 df.idex = pd.to_datetime(df.index)
 df.head(12)
