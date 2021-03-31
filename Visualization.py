@@ -50,7 +50,7 @@ bike_traffic_df1 = pd.read_json('bike_traffic1.json', lines=True)
 
 
 #%%
-data_test=bike_traffic_df2.join(bike_traffic_df2['dateObserved'].apply(lambda x: Series(x.split('/'))))
+data_test=bike_traffic_df1.join(bike_traffic_df1['dateObserved'].apply(lambda x: Series(x.split('/'))))
 data_test=data_test.rename(columns = {0: 'start_of_day', 1: 'end_of_day'}) 
 
 data_test['start_of_day'] = data_test['start_of_day'].str.replace('T',' ')
@@ -84,6 +84,7 @@ data_test22=data_test22.T
 data_test22['startday'] = time_improved
 #%%
 data_test22 = data_test22.set_index(['startday'])
+
 
 
 #%%
