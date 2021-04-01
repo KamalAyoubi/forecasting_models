@@ -1,10 +1,15 @@
 #%%
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from download import download
 
 # %%
 #Database import 
+#df_bike_data_raw = pd.read_csv('./data/La_myriade_de_Totems_de_Montpellier.csv', sep=',', parse_dates=True)
+#data = df_bike_data_raw.values
+
+#%%
 url = " https://docs.google.com/spreadsheets/d/e/2PACX-1vQVtdpXMHB4g9h75a0jw8CsrqSuQmP5eMIB2adpKR5hkRggwMwzFy5kB-AIThodhVHNLxlZYm8fuoWj/pub?gid=2105854808&single=true&output=csv"
 path_target = "./data/La_myriade_de_Totems_de_Montpellier.csv"
 download(url, path_target, replace=False)  # if needed `pip install download`
@@ -29,7 +34,7 @@ df_bike_data_raw.columns
 
 # %%
 #Dropping useless columns ( with missing values).
-to_drop = ['Remarque','Unnamed: 4','Vélos depuis le 1er janvier / Grand total']
+to_drop = ['Remarque','Unnamed: 4']
 df_bike1= df_bike_data_raw.drop(to_drop, inplace=False, axis=1)
 
 
@@ -63,22 +68,32 @@ del df_bike['Heure / Time']
 # %%
 
 bike_ts = df_bike.set_index(['DateTime'])
+#bike_ts = polution_ts.sort_index(ascending=True)
+#bike_ts.head(12)
 
 
 # %%
+
+#V1J = Vélos depuis le 1er janvier / Grand total
 #VCJ = Vélos ce jour / Today's total
-bike_ts.columns = ['VCJ']
+bike_ts.columns = ['V1J','VCJ']
+#%%
+del bike_ts['V1J']
 
 #%%
 
 fig, axes = plt.subplots(2, 1, figsize=(8, 6), sharex=True)
 
+#axes[0].plot(bike_ts['V1J']).resample('d').mean(), '-'
+#axes[0].set_title("Vélos depuis le 1er janvier / Grand total")
+#axes[0].set_ylabel("Nombre des vélos")
+
 axes[1].plot(bike_ts['VCJ'])
-axes[1].set_title("Vélos par time day ")
+axes[1].set_title("Vélos ce jour / Today's total")
 axes[1].set_ylabel("Nombre des vélos")
 
 axes[0].plot(bike_ts['VCJ'].resample('d').mean(), '-')
-axes[0].set_title("Vélos moyenne day")
+axes[0].set_title("Vélos depuis le 1er janvier / Grand total")
 axes[0].set_ylabel("Nombre des vélos")
 
 
@@ -89,7 +104,7 @@ plt.show()
 
 bike_day_mean=bike_ts['VCJ'].resample('d').mean()
 
-bike_ts22 = pd.DataFrame(bike_day_mean)
+bike_ts = pd.DataFrame(bike_day_mean)
 #%%
 
 
