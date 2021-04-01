@@ -4,7 +4,6 @@ import pandas as pd
 from pandas import DataFrame
 import seaborn as sns
 from ipywidgets import interact 
-from matplotlib import pyplot as plt
 
 from datetime import datetime
 
@@ -109,23 +108,35 @@ data_test22['startday'] = time_improved
 data_test22 = data_test22.set_index(['startday'])
 print(data_test22)
 
-
 #%%
-
-def hist_explore( pos ='latte1', bw=1 ):
-
+color_picker = widgets.ColorPicker(
+    concise=True
+    description='curv color:',
+    value='#efefef',
+)
+color_picker
+#%%
+def Intenity_visualisation( count_point ='latte1', day_month='d', efefef='red', start_date='2020-12-15', end_date='2021-04-01'):
+    
   
     fig, ax = plt.subplots(1, 1, figsize=(12, 6))
 
-    ax.plot(data_test22[pos])
+    data_intensity=[]
+    ax.plot(data_intensity[count_point].resample( day_month ).mean(), '-*',color= efefef )
     
-    plt.xlabel('Age')
-    plt.ylabel('Density level')
-    plt.title("Histogram for passengers age")
+    plt.xlabel('Time serie')
+    plt.ylabel('Intensity')
+    plt.title("intensity of bikes")
     plt.tight_layout()
     plt.show()
 
 
-interact(hist_explore ,pos=['Celleneuve', 'Lattes2', 'Berracasa', 'Lavérune','Lattes1', 'Vieille_poste', 'Gerhardt', 'Tanneurs','Delmas1', 'Delmas2'] ,alpha=['d','m'],bw=(1, 6, 1))
-
+interact(Intenity_visualisation ,
+                                count_point=['Celleneuve', 'Lattes2', 'Berracasa', 'Lavérune','Lattes1',                                                            'Vieille_poste', 'Gerhardt', 'Tanneurs','Delmas1', 'Delmas2'] , 
+                                day_month=['d','m'],
+                                efefef=color_picker,
+                                start_date=widgets.DatePicker(value=pd.to_datetime('2020-12-15')),
+                                 end_date=widgets.DatePicker(value=pd.to_datetime('2021-04-01'))
+                                
+        )
 #%%
