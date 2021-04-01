@@ -6,6 +6,7 @@ import seaborn as sns
 from ipywidgets import interact 
 
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 import json
 from pandas import json_normalize
@@ -100,18 +101,20 @@ bike_traffic_df9=bike_traffic_df9.rename(columns = {'intensity': 'Delmas1'})
 bike_traffic_df10=bike_traffic_df10.rename(columns = {'intensity': 'Delmas2'}) 
 
 #Extract the renamed columns, and combine them into a new dataframe 
-data_test22 = pd.DataFrame((bike_traffic_df1['Celleneuve'], bike_traffic_df2['Lattes2'],bike_traffic_df3['Berracasa'],bike_traffic_df4['Lavérune'],bike_traffic_df5['Lattes1'],bike_traffic_df6['Vieille_poste']))
-data_test22=data_test22.T
+data_intensity = pd.DataFrame((bike_traffic_df1['Celleneuve'], bike_traffic_df2['Lattes2'],bike_traffic_df3['Berracasa'],bike_traffic_df4['Lavérune'],bike_traffic_df5['Lattes1'],bike_traffic_df6['Vieille_poste'],bike_traffic_df7['Gerhardt'],bike_traffic_df8['Tanneurs'],bike_traffic_df9['Delmas1'],bike_traffic_df10['Delmas2']))
+data_intensity=data_intensity.T
 
 #Indexing neww data by 'end_of-day' (time series)
-data_test22['startday'] = time_improved
-data_test22 = data_test22.set_index(['startday'])
-print(data_test22)
+data_intensity['startday'] = time_improved
+data_intensity = data_intensity.set_index(['startday'])
+print(data_intensity )
+
 
 #%%
+from ipywidgets import widgets
 color_picker = widgets.ColorPicker(
-    concise=True
-    description='curv color:',
+    concise=True,
+    description='Background color:',
     value='#efefef',
 )
 color_picker
@@ -121,7 +124,7 @@ def Intenity_visualisation( count_point ='latte1', day_month='d', efefef='red', 
   
     fig, ax = plt.subplots(1, 1, figsize=(12, 6))
 
-    data_intensity=[]
+    
     ax.plot(data_intensity[count_point].resample( day_month ).mean(), '-*',color= efefef )
     
     plt.xlabel('Time serie')
