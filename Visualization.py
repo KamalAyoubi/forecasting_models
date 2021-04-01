@@ -118,8 +118,14 @@ color_picker = widgets.ColorPicker(
     value='#efefef',
 )
 color_picker
+
+color_buttons = widgets.ToggleButtons(
+    options=['blue', 'red', 'green','black'],
+    description='Color:',
+)
+color_buttons
 #%%
-def Intenity_visualisation( count_point ='latte1', day_month='d', efefef='red', start_date='2020-12-15', end_date='2021-04-01'):
+def Intenity_visualisation( count_point ='latte1', day_month='d', efefef='red', start_date='2020-12-15', end_date='2021-04-01', color='black'):
     
   
     fig, ax = plt.subplots(1, 1, figsize=(12, 6))
@@ -127,9 +133,9 @@ def Intenity_visualisation( count_point ='latte1', day_month='d', efefef='red', 
     
     ax.plot(data_intensity[count_point].resample( day_month ).mean(), '-*',color= efefef )
     
-    plt.xlabel('Time serie')
-    plt.ylabel('Intensity')
-    plt.title("intensity of bikes")
+    plt.xlabel('Time serie',color=color)
+    plt.ylabel('Intensity',color=color)
+    plt.title("intensity of bikes",color=color)
     plt.tight_layout()
     plt.show()
 
@@ -140,6 +146,7 @@ interact(Intenity_visualisation ,
                                 efefef=color_picker,
                                 start_date=widgets.DatePicker(value=pd.to_datetime('2020-12-15')),
                                  end_date=widgets.DatePicker(value=pd.to_datetime('2021-04-01'))
-                                
+                                ,
+                                color=color_buttons 
         )
 #%%
