@@ -33,7 +33,6 @@ df_bike = df_bike1.dropna()
 
 #%%
 # create international timing format in the dataframe
-
 standard_time  = pd.to_datetime(df_bike['Date'] +
                                ' ' + df_bike['HeureTime'],
                                format='%d/%m/%Y %H:%M:%S')
@@ -82,51 +81,17 @@ plt.show()
 
 
 
-
-from statsmodels.tsa.stattools import adfuller
-def test_stationarity(timeseries):
-    
-    #Determing rolling statistics
-    #rolmean = pd.rolling_mean(timeseries, window=12)
-    rolmean = pd.Series(timeseries).rolling(window=12).mean()
-
-    #rolstd = pd.rolling_std(timeseries, window=12)#Plot rolling statistics:
-    rolstd = pd.Series(timeseries).rolling(window=12).std()
-
-    plt.plot(timeseries, color='blue',label='Original')
-    plt.plot(rolmean, color='red', label='Rolling Mean')
-    plt.plot(rolstd, color='black', label = 'Rolling Std')
-    plt.legend(loc='best')
-    plt.title('Rolling Mean & Standard Deviation')
-    plt.show()
-    #Perform Dickey-Fuller test:
-    print ('Results of Dickey-Fuller Test:')
-    dftest = adfuller(timeseries, autolag='AIC')
-    dfoutput = pd.Series(dftest[0:4], index=['Test Statistic','p-value','#Lags Used','Number of Observations Used'])
-    for key,value in dftest[4].items():
-        dfoutput['Critical Value (%s)'%key] = value
-    print (dfoutput)
-
-# %%
-
-
-bike1=night_data.copy()
-
-
-
-#%%
-test_stationarity(bike1['VCJ'])
 # %%
 
 from statsmodels.tsa.arima_model import ARIMA
 #%%
-fig = plt.figure(figsize=(20,8))
-model = ARIMA(bike1['VCJ'], order=(1,0,2)) 
+fig = plt.figure(figsize=(10,8))
+model = ARIMA(bike1['VCJ'], order=(2,1,2)) 
 ax = plt.gca()
 results = model.fit()
 plt.plot(bike1['VCJ'], color='green')
 plt.plot(results.fittedvalues, color='red')
-ax.legend(['Car Count', 'Forecast'])
+ax.legend([' bike count', 'prediction'])
 
 #%%
 print(results)
@@ -138,7 +103,6 @@ x = results.predict(start=(20), end=(29), dynamic=False)
 plt.plot(bike1['VCJ'][:30])
 plt.plot(x, color='r')
 #%%
-
 
 
 
